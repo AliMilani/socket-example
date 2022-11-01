@@ -77,29 +77,14 @@
       <div id="username"></div>
     </div>
     <ul id="online_users"></ul>
-    <form id="form" action="">
+    <!-- <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
-    </form>
-    <!-- <script>
-      let socket = io();
-    
-      let form = document.getElementById('form');
-      let input = document.getElementById('input');
-
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        if (input.value) {
-          socket.emit('chat message', input.value);
-          input.value = '';
-        }
-      });
-    </script> -->
+    </form> -->
 
     <script>
       let socket = io();
 
       let online_users = document.getElementById("online_users");
-      // let form = document.getElementById("form");
       let input = document.getElementById("input");
       let username = document.getElementById("username");
 
@@ -122,11 +107,6 @@
             }
             return reject("User already exists");
           });
-          // setTimeout(() => {
-          //   if (!isRegistered) {
-          //     return reject("Could not register user because of timeout");
-          //   }
-          // }, 5000);
         });
       const verifyToken = (token) =>
         new Promise((resolve, reject) => {
@@ -182,11 +162,6 @@
             return verifiedUser;
           }
         } catch (err) {
-          // if (err == "User already exists") {
-          //   alert("User already exists");
-          //   window.location.reload();
-          //   return;
-          // }
           switch (err) {
             case "User already exists":
               alert("User already exists");
@@ -198,39 +173,17 @@
               window.location.reload();
               return;
             default:
-            // console.error(err);
-            // alert(err);
-            // window.location.reload();
-            // return;
           }
-          // alert(err);
           throw err;
         }
       };
-      // on load page
       document.addEventListener("DOMContentLoaded", async function () {
         const user = await validateUser();
         getOnlineUsers(user);
       });
-      // form.addEventListener("submit", function (e) {
-      //   let user = getUser();
-      //   console.log(user);
-      //   e.preventDefault();
-      //   if (input.value) {
-      //     socket.emit("chat message", { token: user.token, text: input.value });
-      //     input.value = "";
-      //   }
-      // });
-
-      // socket.on("online users", function (msg) {
-      //   let item = document.createElement("li");
-      //   item.textContent = `(${msg.name}): ${msg.text}`;
-      //   online_users.appendChild(item);
-      //   window.scrollTo(0, document.body.scrollHeight);
-      // });
 
       socket.on("online users", (users) => {
-        users = users.filter((onlineUser) =>onlineUser !== getUser().name);
+        users = users.filter((onlineUser) => onlineUser !== getUser().name);
         loadOnlineUsers(users);
       });
 
@@ -256,7 +209,6 @@
       }
 
       socket.on("error", function (msg) {
-        // alert(msg);
         if (msg == "Invalid token") {
           console.error(msg);
           logOutUser();
